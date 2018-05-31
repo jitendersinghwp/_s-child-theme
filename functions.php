@@ -20,7 +20,7 @@ add_action( 'wp_enqueue_scripts', '_s_child_theme_scripts' );
 if ( ! function_exists('_s_child_theme_register_task') ) {
 
 /**
- * Register Custom Post Type - Task for
+ * Register Custom Post Type - Task 
  */
 function _s_child_theme_register_task() {
 
