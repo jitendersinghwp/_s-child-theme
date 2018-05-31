@@ -4,7 +4,9 @@
  *
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  *
- * @package _s-child-theme
+ * @version 0.0.1
+ *
+ * @author jitendersinghwp
  */
 
 /**
@@ -15,10 +17,12 @@ function _s_child_theme_scripts() {
 }
 add_action( 'wp_enqueue_scripts', '_s_child_theme_scripts' );
 
-if ( ! function_exists('register_task') ) {
+if ( ! function_exists('_s_child_theme_register_task') ) {
 
-// Register Custom Post Type - Task
-function register_task() {
+/**
+ * Register Custom Post Type - Task for
+ */
+function _s_child_theme_register_task() {
 
 	$labels = array(
 		'name'                  => _x( 'Tasks', 'Post Type General Name', 'task' ),
@@ -72,6 +76,6 @@ function register_task() {
 	register_post_type( 'task', $args );
 
 }
-add_action( 'init', 'register_task', 0 );
+add_action( 'init', '_s_child_theme_register_task', 0 );
 
 }
