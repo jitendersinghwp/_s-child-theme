@@ -80,16 +80,16 @@ add_action( 'init', '_s_child_theme_register_task', 0 );
 }
 
 /**
- * This function adds a meta box with a callback function of my_metabox_callback()
+ * This function adds a meta box at task(custom posttype screen) with a callback function of task_status_metabox_callback
  */
 function _s_child_theme_add_meta_box() {
     add_meta_box(
-        'metabox_id',
+        'tast_status_metabox_id',
         __( 'Task Status', '_s-child-theme' ),
-        '_s_child_theme_metabox_callback',
+        'task_status_metabox_callback',
         'task',
         'normal',
-        'low'
+        'high'
     );
 }
 add_action( 'add_meta_boxes', _s_child_theme_add_meta_box );
@@ -98,10 +98,9 @@ add_action( 'add_meta_boxes', _s_child_theme_add_meta_box );
  * Get post meta in a callback
  *
  * @param WP_Post $post    The current post.
- * @param array   $metabox With metabox id, title, callback, and args elements.
  */
 
-function _s_child_theme_metabox_callback( $post, $metabox ) {
+function task_status_metabox_callback( $post ) {
     // Output last time the post was modified.
     ?>
     <input type="checkbox" name="task_status" /> Task Status
