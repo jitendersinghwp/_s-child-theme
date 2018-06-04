@@ -103,12 +103,21 @@ add_action( 'add_meta_boxes', _s_child_theme_add_meta_box );
  * @param object $post    The current post.
  */
 function _s_child_theme_task_status_metabox_callback( $post ) {
+    //fetch all post meta data
+    $value = get_post_custom( $post->ID );
+    //tast_status value
+    $task_status = isset( $value['task_status'] ) ? $value['task_status'] : '';
+    //assignee name
+    $assignee = isset( $value['assignee'] ) ? esc_attr( $value['assignee'] ) : '';
+
+    //insert nounce field for validing request
+    wp_nonce_field( '_s_child_theme_task_status', '_s_child_theme_task_status_action' );
     //get all users
     $users = get_users(array(
       fields => array('display_name')
     ));
     ?>
-    <select class="select_user" id="user" name="user">
+    <select class="select_user" id="assignee" name="assignee">
       <option value="">Select Assignee</option>
       <?php
         /**
@@ -116,15 +125,15 @@ function _s_child_theme_task_status_metabox_callback( $post ) {
          */
         foreach($users as $user):
           ?>
-          <option value="<?php echo $user->display_name; ?>">
+          <option value="<?php echo $user->display_name; ?>" <?php selected( $assignee, $user->display_name ) ?>>
                 <?php echo $user->display_name; ?>
           </option>
           <?php
         endforeach
       ?>
     </select>
-    <label for="user">Assignee</label>
-    <input type="checkbox" id="task_status" name="task_status" />
+    <label for="assignee">Assignee</label>
+    <input type="checkbox" id="task_status" name="task_status" <?php checked( $task_status, 'on' ) ?> />
     <label for="task_status">Task Status</label>
     <?php
 }
