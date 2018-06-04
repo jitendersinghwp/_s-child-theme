@@ -109,7 +109,7 @@ function _s_child_theme_task_status_metabox_callback( $post ) {
     ));
     ?>
     <select class="select_user" id="user" name="user">
-      <option value="">Select</option>
+      <option value="">Select Assignee</option>
       <?php
         /**
          * adding all user into UI
