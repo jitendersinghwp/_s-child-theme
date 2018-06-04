@@ -104,14 +104,14 @@ add_action( 'add_meta_boxes', _s_child_theme_add_meta_box );
  */
 function _s_child_theme_task_status_metabox_callback( $post ) {
     //fetch all post meta data
-    $value = get_post_custom( $post->ID );
+    $value = get_post_meta( $post->ID );
     //tast_status value
-    $task_status = isset( $value['task_status'] ) ? $value['task_status'] : '';
+    $task_status = isset( $value['task_status'] ) ? $value['task_status'][0] : '';
     //assignee name
-    $assignee = isset( $value['assignee'] ) ? esc_attr( $value['assignee'] ) : '';
+    $assignee = isset( $value['assignee'] ) ? esc_attr( $value['assignee'][0] ) : '';
 
     //insert nounce field for validing request
-    wp_nonce_field( '_s_child_theme_task_status', '_s_child_theme_task_status_action' );
+    wp_nonce_field( '_s_child_theme_task_status_action', '_s_child_theme_task_status' );
     //get all users
     $users = get_users(array(
       fields => array('display_name')
@@ -136,4 +136,31 @@ function _s_child_theme_task_status_metabox_callback( $post ) {
     <input type="checkbox" id="task_status" name="task_status" <?php checked( $task_status, 'on' ) ?> />
     <label for="task_status">Task Status</label>
     <?php
+}
+
+// hook task status meta box data save into save_task
+add_action( 'save_post_task', '_s_child_theme_meta_box_data_save' );
+
+/**
+ * Save task status meta box data
+ * @param int $post_id
+ */
+function _s_child_theme_meta_box_data_save( $post_id ) {
+  //return if not verify nonce
+  if( !isset( $_POST['_s_child_theme_task_status'] ) || !wp_verify_nonce( $_POST['_s_child_theme_task_status'], '_s_child_theme_task_status_action' ) ) {
+    return;
+  }
+
+  //return if current user not edit post
+  if( !current_user_can( 'edit_post' ) ) {
+    return;
+  }
+  // update current task status postmeta
+  $task_status = isset( $_POST['task_status'] ) ? esc_attr ( $_POST['task_status'] ) : 'off';
+  update_post_meta( $post_id, 'task_status', $task_status );
+
+  //update current assignee postmeta
+  $assignee = isset( $_POST['assignee'] ) ? esc_attr( $_POST['assignee'] ) : '';
+  update_post_meta( $post_id, 'assignee', $assignee );
+
 }
