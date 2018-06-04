@@ -103,8 +103,28 @@ add_action( 'add_meta_boxes', _s_child_theme_add_meta_box );
  * @param object $post    The current post.
  */
 function _s_child_theme_task_status_metabox_callback( $post ) {
-    // Output last time the post was modified.
+    //get all users
+    $users = get_users(array(
+      fields => array('display_name')
+    ));
     ?>
-    <input type="checkbox" name="task_status" /> Task Status
+    <select class="select_user" id="user" name="user">
+      <option value="">Select</option>
+      <?php
+        /**
+         * adding all user into UI
+         */
+        foreach($users as $user):
+          ?>
+          <option value="<?php echo $user->display_name; ?>">
+                <?php echo $user->display_name; ?>
+          </option>
+          <?php
+        endforeach
+      ?>
+    </select>
+    <label for="user">Assignee</label>
+    <input type="checkbox" id="task_status" name="task_status" />
+    <label for="task_status">Task Status</label>
     <?php
 }
