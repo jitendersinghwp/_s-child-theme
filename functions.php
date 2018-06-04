@@ -15,6 +15,7 @@
 function _s_child_theme_scripts() {
   wp_enqueue_style( '_s-child-theme-style', get_stylesheet_uri() );
 }
+//hook enqueue all style and scripts into wp_enqueue_scripts
 add_action( 'wp_enqueue_scripts', '_s_child_theme_scripts' );
 
 if ( ! function_exists('_s_child_theme_register_task') ) {
@@ -76,6 +77,7 @@ function _s_child_theme_register_task() {
 	register_post_type( 'task', $args );
 
 }
+//hook task (custom posttype) registration into init
 add_action( 'init', '_s_child_theme_register_task', 0 );
 }
 
@@ -84,23 +86,23 @@ add_action( 'init', '_s_child_theme_register_task', 0 );
  */
 function _s_child_theme_add_meta_box() {
     add_meta_box(
-        'tast_status_metabox_id',
+        '_s_child_theme_tast_status_metabox_id',
         __( 'Task Status', '_s-child-theme' ),
-        'task_status_metabox_callback',
+        '_s_child_theme_task_status_metabox_callback',
         'task',
         'normal',
         'high'
     );
 }
+// hook task status meta box registration into add_meta_boxes
 add_action( 'add_meta_boxes', _s_child_theme_add_meta_box );
 
 /**
- * Get post meta in a callback
+ * Display Task status UI
  *
- * @param WP_Post $post    The current post.
+ * @param object $post    The current post.
  */
-
-function task_status_metabox_callback( $post ) {
+function _s_child_theme_task_status_metabox_callback( $post ) {
     // Output last time the post was modified.
     ?>
     <input type="checkbox" name="task_status" /> Task Status
