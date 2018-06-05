@@ -13,7 +13,7 @@
  * Enqueue style
  */
 function _s_child_theme_scripts() {
-  wp_enqueue_style( '_s-child-theme-style', get_stylesheet_uri() );
+  wp_enqueue_style( '_s-child-theme-style', get_template_directory_uri().'/style.css' );
 }
 //hook enqueue all style and scripts into wp_enqueue_scripts
 add_action( 'wp_enqueue_scripts', '_s_child_theme_scripts' );
