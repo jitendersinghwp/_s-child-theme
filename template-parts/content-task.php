@@ -51,6 +51,36 @@
 			'after'  => '</div>',
 		) );
 		?>
+		<div class="task-data">
+				<?php
+					/**
+					 * retrieve all post meta of post
+					 */
+					$value = get_post_meta( $post->ID );
+
+					/**
+					 * task status
+					 */
+					$task_status = esc_attr ( $value['task_status'][0] );
+
+					/**
+					 * assignee
+					 */
+					 $assignee = esc_attr( $value['assignee'][0] );
+
+				?>
+				<input type="checkbox" name="" <?php checked( $task_status, 'on' ) ?> disabled>
+				<label for="">
+					<?php if($task_status == 'on'):
+							echo 'Completed';
+						else:
+							echo 'Not Completed';
+						endif;
+					?>
+				</label>
+				by <?php echo $assignee = $value['assignee'][0]; ?>
+
+		</div>
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
