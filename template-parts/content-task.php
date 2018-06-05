@@ -9,7 +9,30 @@
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<?php
+	/**
+	 * retrieve all post meta of post
+	 */
+	$value = get_post_meta( $post->ID );
+
+	/**
+	 * task status
+	 */
+	$task_status = esc_attr ( $value['task_status'][0] );
+
+	/**
+	 * assignee
+	 */
+	 $assignee = esc_attr( $value['assignee'][0] );
+
+	 /**
+	  * class for task status
+	  */
+		$task_current_status = ( $task_status == 'on' ) ? 'completed' :'incompleted';
+
+?>
+
+<article id="post-<?php the_ID(); ?>" <?php post_class( array( $task_current_status ) ); ?>>
 	<header class="entry-header">
 		<?php
 		if ( is_singular() ) :
@@ -52,34 +75,9 @@
 		) );
 		?>
 		<div class="task-data">
-				<?php
-					/**
-					 * retrieve all post meta of post
-					 */
-					$value = get_post_meta( $post->ID );
-
-					/**
-					 * task status
-					 */
-					$task_status = esc_attr ( $value['task_status'][0] );
-
-					/**
-					 * assignee
-					 */
-					 $assignee = esc_attr( $value['assignee'][0] );
-
-				?>
 				<input type="checkbox" name="" <?php checked( $task_status, 'on' ) ?> disabled>
-				<label for="">
-					<?php if($task_status == 'on'):
-							echo 'Completed';
-						else:
-							echo 'Not Completed';
-						endif;
-					?>
-				</label>
-				by <?php echo $assignee = $value['assignee'][0]; ?>
-
+				<label for=""><?php echo $task_current_status; ?></label>
+				 by <?php echo $assignee = $value['assignee'][0]; ?>
 		</div>
 	</div><!-- .entry-content -->
 
